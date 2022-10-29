@@ -1,23 +1,36 @@
+#include <fstream>
+#include <vector>
+#include <iostream>
+#include <sstream>
 #include <SFML/Graphics.hpp>
+
+
+void read_file(std::string file_name, std::vector<std::vector<int>>& arr) {
+    std::ifstream file(file_name);
+
+    arr.push_back(std::vector<int>());  // initialization
+    std::string row;
+    int i = 0;
+    while (std::getline(file, row)) {
+        std::stringstream ss(row);
+        int value = 0;
+        while (ss >> value)
+            arr[i].push_back(value);
+        arr.push_back(std::vector<int>());
+        i++;
+    }
+}
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    std::vector<std::vector<int>> sectors;
+    read_file("massiv.txt", sectors);
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
+    for (auto& krow : sectors) {
+        for (auto& val : krow) {
+            std::cout << val << " ";
         }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
+        std::cout << std::endl;
     }
 
     return 0;
