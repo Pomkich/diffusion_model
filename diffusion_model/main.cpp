@@ -72,27 +72,7 @@ int main()
     read_file("massiv.txt", *first_buffer);
     read_file("massiv.txt", *second_buffer);
     read_file("conductivity.txt", conductivity_coef);
-
-    // init conductivity and thermal points
-    for (int i = 0; i < first_buffer->size(); i++) {
-        thermal_points.push_back(std::vector<int>());
-        for (int j = 0; j < (*first_buffer)[i].size(); j++) {
-            thermal_points[i].push_back(0);
-        }
-    }
-
-    // first 20 cells have conductivity = 2
-    for (int i = 0; i < 20; i++) {
-        conductivity_coef.push_back(std::vector<int>());
-        thermal_points.push_back(std::vector<int>());
-        for (int j = 0; j < conductivity_coef[i].size(); j++) {
-            conductivity_coef[i][j] = 2;
-        }
-    }
-    
-    // setup thermal points
-    //thermal_points[10][10] = 1;
-    thermal_points[50][30] = 1;
+    read_file("therm_points.txt", thermal_points);
 
     const int screen_width = 800;
     const int screen_height = 600;
