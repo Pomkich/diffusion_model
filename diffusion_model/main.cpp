@@ -55,9 +55,7 @@ void calculate_therm(array_pt& prev_iter, array_pt& next_iter, array& con_coef, 
                 (*prev_iter)[i][j]) / 5 / 
                 (h * h) * dt + therm_pts[i][j] * dt;
 
-            if ((*next_iter)[i][j] > 255) {
-                (*next_iter)[i][j] = 255;
-            }
+            (*next_iter)[i][j] = clamp((*next_iter)[i][j], 0, 255);
         }
     }
 }
@@ -98,6 +96,7 @@ int main()
 
     const int screen_width = 800;
     const int screen_height = 600;
+    const int cell_size = 10;
 
     sf::RenderWindow window(sf::VideoMode(screen_width, screen_height), "thermal simulation");
     // init rectagnles
@@ -106,9 +105,9 @@ int main()
         rectangles.push_back(std::vector<sf::RectangleShape>());
         for (int j = 0; j < (*first_buffer)[i].size(); j++) {
             sf::RectangleShape rect;
-            rect.setSize(sf::Vector2f(10, 10));
-            rect.setFillColor(sf::Color::Black);
-            rect.setPosition(j * 10, i * 10);
+            rect.setSize(sf::Vector2f(cell_size, cell_size));
+            rect.setFillColor(sf::Color::White);
+            rect.setPosition(j * cell_size, i * cell_size);
             rectangles[i].push_back(rect);
         }
     }
@@ -133,8 +132,9 @@ int main()
         calculate_therm(first_buffer, second_buffer, conductivity_coef, thermal_points);
         for (int i = 0; i < rectangles.size(); i++) {
             for (int j = 0; j < rectangles[i].size(); j++) {
-                sf::Color color;    // setup new color
-                color.r = (*second_buffer)[i][j];
+                sf::Color color = sf::Color::White;    // setup new color
+                color.g -= (*second_buffer)[i][j];
+                color.b -= (*second_buffer)[i][j];
                 rectangles[i][j].setFillColor(color);
             }
         }
