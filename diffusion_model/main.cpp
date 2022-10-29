@@ -27,6 +27,7 @@ void read_file(std::string file_name, std::vector<std::vector<int>>& arr) {
         arr.push_back(std::vector<int>());
         i++;
     }
+    file.close();
     arr.pop_back();
 }
 
@@ -70,13 +71,12 @@ int main()
 
     read_file("massiv.txt", *first_buffer);
     read_file("massiv.txt", *second_buffer);
+    read_file("conductivity.txt", conductivity_coef);
 
     // init conductivity and thermal points
     for (int i = 0; i < first_buffer->size(); i++) {
-        conductivity_coef.push_back(std::vector<int>());
         thermal_points.push_back(std::vector<int>());
         for (int j = 0; j < (*first_buffer)[i].size(); j++) {
-            conductivity_coef[i].push_back(1);
             thermal_points[i].push_back(0);
         }
     }
