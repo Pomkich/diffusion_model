@@ -23,16 +23,10 @@ void read_file(std::string file_name, std::vector<std::vector<int>>& arr) {
     }
 }
 
-void switch_buffers(array_pt& p1, array_pt& p2) {
-    array_pt temp = p1;
-    p1 = p2;
-    p2 = temp;
-}
-
 int main()
 {
-    array_pt first_buffer = std::make_shared<std::vector<std::vector<int>>>();
-    array_pt second_buffer = std::make_shared<std::vector<std::vector<int>>>();
+    array_pt first_buffer = std::make_shared<array>();
+    array_pt second_buffer = std::make_shared<array>();
     read_file("massiv.txt", *first_buffer);
     read_file("massiv.txt", *second_buffer);
 
@@ -55,7 +49,8 @@ int main()
         std::cout << std::endl;
     }
 
-    switch_buffers(first_buffer, second_buffer);
+    //switch_buffers(first_buffer, second_buffer);
+    std::swap(first_buffer, second_buffer);
     std::cout << "%%%%%%%%%%%%%%%%%%%%%" << std::endl;
 
     for (int i = 0; i < first_buffer->size(); i++) {
